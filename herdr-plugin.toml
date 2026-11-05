@@ -1,0 +1,26 @@
+id = "twiking.pr"
+name = "Pull Request"
+version = "0.1.0"
+min_herdr_version = "0.9.1"
+description = "Show each workspace branch's Forgejo or GitHub pull request (open, approved, changes requested, draft, merged, closed) as the $pr sidebar token, and open it in the browser."
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "open"
+title = "Open this workspace's pull request in the browser"
+command = ["python3", "-I", "pr.py", "open"]
+
+[[actions]]
+id = "refresh"
+title = "Refresh pull request status now"
+command = ["python3", "-I", "pr.py", "start"]
+
+# The watcher polls the forges in the background and reports $pr on every
+# workspace. Startup launches it; focusing a workspace restarts it if it died,
+# or otherwise makes it refresh right away (e.g. after a checkout).
+[[startup]]
+command = ["python3", "-I", "pr.py", "start"]
+
+[[events]]
+on = "workspace.focused"
+command = ["python3", "-I", "pr.py", "start"]
